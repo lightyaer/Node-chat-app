@@ -1,37 +1,66 @@
-var socket = io();
+/* global io , jQuery */
+var socket = io()
 
 socket.on('connect', function () {
-    console.log('Connected to Server');
-});
+    console.log('Connected to Server')
+})
 
 socket.on('disconnect', function () {
-    console.log('Disconnected from Server');
-});
+    console.log('Disconnected from Server')
+})
 
 socket.on('newMessage', function (message) {
-    console.log(message);
-    var li = jQuery('<li></li>');
-    li.text(`${new Date(message.createdAt).toLocaleTimeString()} ${message.from} : ${message.text}`);
-    jQuery('#messages').append(li);
-});
+    console.log(message)
+    var li = jQuery('<li></li>')
+    li.text(`${new Date(message.createdAt).toLocaleTimeString()} ${message.from} : ${message.text}`)
+    jQuery('#messages').append(li)
+})
 
 
 jQuery('#messageForm').on('submit', function (e) {
 
-    e.preventDefault();
+    e.preventDefault()
     socket.emit('createMessage', {
         from: 'User',
         text: jQuery('[name=message]').val()
     }, function () {
-        jQuery('[name=message]').val("");
-        console.log('Message Delivered');
-    });
-});
+        jQuery('[name=message]').val('')
+        console.log('Message Delivered')
+    })
+})
+
+var sendLocation = jQuery('#sendLocation')
+sendLocation.on('click', function () {
+    if (!navigator.geolocation) {
+        return alert('Geolocation not supported by your Browser')
+    }
+
+    navigator.geolocation.getCurrentPosition(function (position) {
+
+        socket.emit('createLocationMessage', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        })
+    }, function (err) {
+        console.log(err)
+        alert('Unable to fetch Location')
+    })
+})
+
+socket.on('newLocationMessage', function (message) {
+    var li = jQuery('<li></li>')
+    var a = jQuery('<a target="_blank">My Current Location</a>')
+
+    li.text(`${message.from} : `)
+    a.attr('href', message.url)
+    li.append(a)
+    jQuery('#messages').append(li)
+})
 
 
 // socket.emit('createMessage', {
 //     from: 'Dhananjay',
 //     text: 'Demo Message Here'
 // }, function (data) {
-//     console.log('Message Delivered', data);
+//     console.log('Message Delivered', data)
 // })
