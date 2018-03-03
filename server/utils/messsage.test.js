@@ -10,7 +10,7 @@ describe('generateMessage', () => {
         var res = generateMessage(from, text)
         expect(res.from).toBe(from)
         expect(res.text).toBe(text)
-        expect(typeof res.createdAt).toBe('number')
+        expect(typeof res.createdAt).toBe('string')
 
     })
 })
@@ -23,7 +23,7 @@ describe('generateLocationMessage', () => {
         var url = 'https://google.com/maps?q=11.2564658,65.2165421'
         var res = generateLocationMessage(from, lat, lng)
         expect(res.from).toBe(from)
-        expect(typeof res.createdAt).toBe('number')
+        expect(typeof res.createdAt).toBe('string')
         expect(res.url).toBe(url)
 
     })
