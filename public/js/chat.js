@@ -1,7 +1,7 @@
 /* global io , jQuery , moment , Mustache*/
 var socket = io()
 
-var scrollToBotton = function () {
+var scrollToBottom = function () {
     //selectors 
     var messages = jQuery('#messages')
     var newMessage = messages.children('li:last-child')
@@ -17,7 +17,6 @@ var scrollToBotton = function () {
     }
 
 }
-
 
 socket.on('connect', function () {
     console.log('Connected to Server')
@@ -36,7 +35,7 @@ socket.on('newMessage', function (message) {
         createdAt: formattedTime
     })
     jQuery('#messages').append(html)
-    scrollToBotton()
+    scrollToBottom()
 })
 
 jQuery('#messageForm').on('submit', function (e) {
@@ -83,5 +82,5 @@ socket.on('newLocationMessage', function (message) {
         url: message.url
     })
     jQuery('#messages').append(html)
-    scrollToBotton()
+    scrollToBottom()
 })
