@@ -1,3 +1,9 @@
+/* Feature Ideas
+make a room name case insensitive
+make a dropdown on index.html to see active chat rooms
+
+*/
+
 const path = require('path')
 const express = require('express')
 const socketIO = require('socket.io')
@@ -19,9 +25,15 @@ io.on('connection', (socket) => {
     console.log('New User Connected')
 
     socket.on('join', (params, callback) => {
+        
         if (!isRealString(params.name) || !isRealString(params.room)) {
             return callback('Name and Room Name are required')
         }
+        if(users.isDuplicateUser(params.name)){
+            return callback('User Already exists with the same Name, Try a different Name')
+        }
+        
+        params.room = params.room.toLowerCase()
         socket.join(params.room)
         users.removeUser(socket.id)
         users.addUser(socket.id, params.name, params.room)

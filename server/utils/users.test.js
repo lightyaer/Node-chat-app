@@ -70,6 +70,18 @@ describe('Users', () => {
         expect(remUser).toEqual(undefined)
     })
 
+    it('should not allow duplicate users', () => {
+        var user = users.users[1]
+        var res = users.isDuplicateUser(user.name)
+        expect(res).toBe(true)
+    })
+
+    it('should allow unique users', () => {
+        var name = 'qwweert'
+        var res = users.isDuplicateUser(name)
+        expect(res).toBe(false)
+    })
+
 
 
 })

@@ -43,7 +43,7 @@ socket.on('updateUsersList', function (users) {
         ul.append(jQuery('<li></li>').text(user))
     })
 
-    jQuery('#users').html(ul);
+    jQuery('#users').html(ul)
 
 })
 
